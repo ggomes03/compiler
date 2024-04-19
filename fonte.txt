@@ -1,12 +1,12 @@
+//asdasd@as<d>>as<=<.d.=>:=:==:
 while
-if
+ifaelse
 else
 then
 !
 //adads//
 @@asdasdadasdasdasdas
 <> <= >= = > + += : := 
-/asdasd@asdasd
 
 /asdasd @asdasd
 { } , . - ;
@@ -24,3 +24,4 @@ asdasdadasdasdasdas
 asdasdadasdasdasdas
 
 !!
+//

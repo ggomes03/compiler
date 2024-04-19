@@ -149,6 +149,7 @@ def compilador(fonte):
             if caractere_atual.isspace():
               classificacao_token = classifica_token(estado)
             else:
+              classificacao_token = classifica_token(estado)
               token = token[:-1]
               index_caractere -= 1
             
