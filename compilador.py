@@ -26,7 +26,7 @@ def print_colorido(token, classificacao_token):
     
     cor = cores.get(classificacao_token, reset)
     
-    print(f"{cor}Token:{token.ljust(20)} -- Classe Token:{classificacao_token}{reset}")
+    print(f"{cor}Token: {token.ljust(20)} -- Classe Token:{classificacao_token}{reset}")
 
 
 def classifica_token(estado):
@@ -43,12 +43,11 @@ def classifica_token(estado):
 
 
 def compilador(fonte):
-  index_linha = 0
-
+  index_linha         = 0
+  estado              = 0
+  token               = ""
   while (index_linha < len(fonte)):
-    estado              = 0
     index_caractere     = 0
-    token               = ""
     classificacao_token = ""
     while (index_caractere < len(fonte[index_linha])):
       caractere_atual = fonte[index_linha][index_caractere]
@@ -66,16 +65,25 @@ def compilador(fonte):
             if caractere_atual in ['{', '}', ',', '*', '(', ')', '=', ';']:
               estado = 7
               classificacao_token = classifica_token(estado)
+            elif caractere_atual in ["+", ":", ">"]:
+              estado = 8
             elif caractere_atual == ".":
               estado = 21 
             elif caractere_atual == "/":
               estado = 12
             elif caractere_atual == "@":
               estado = 14
+            
+            elif caractere_atual == "<":
+              estado = 10
+          elif caractere_atual == "!":
+            estado = 13
           elif isletra(caractere_atual):
             estado = 5
           elif caractere_atual == "_":
             estado = 22 
+          
+            
           
           
 
@@ -123,7 +131,7 @@ def compilador(fonte):
           if caractere_atual.isdigit() or isletra(caractere_atual) or caractere_atual == "\n":
             estado = 6
             if caractere_atual == "\n":
-              classifica_token(estado)
+              classificacao_token = classifica_token(estado)
           else:
             if caractere_atual.isspace():
               classificacao_token = classifica_token(estado)
@@ -132,16 +140,49 @@ def compilador(fonte):
               token = token[:-1]
               index_caractere -= 1
 
+        case 8:
+          if caractere_atual == "=":
+            estado = 9 
+            classificacao_token = classifica_token(estado)
+            
+          else:
+            if caractere_atual.isspace():
+              classificacao_token = classifica_token(estado)
+            else:
+              token = token[:-1]
+              index_caractere -= 1
+            
+        case 10:
+          if caractere_atual == "=":
+            estado = 9 
+            classificacao_token = classifica_token(estado)
 
+          elif caractere_atual == ">":
+            estado = 11
+            classificacao_token = classifica_token(estado)
+
+          else:
+            classificacao_token = classifica_token(estado)
+            token = token[:-1]
+            index_caractere -= 1
         case 12:
           if caractere_atual == "/":
             estado = 15
-          if caractere_atual.isspace():
+          elif caractere_atual.isspace():
             classificacao_token = classifica_token(estado)
           else:
             classificacao_token = classifica_token(estado)
             token = token[:-1]
             index_caractere -= 1
+        
+        case 13:
+          if caractere_atual == "!":
+            estado = 16
+          else:
+            if caractere_atual == "\n":
+              estado = 17
+              index_caractere -= 1
+            
         
         case 14: 
           if caractere_atual == "@":
@@ -150,6 +191,40 @@ def compilador(fonte):
             classificacao_token = classifica_token(estado)
             token = token[:-1]
             index_caractere -= 1
+          
+        case 15:
+          if caractere_atual == "/":
+            estado = 18 
+          elif caractere_atual == "\n":
+            break
+              
+        case 16:
+          if caractere_atual == "!":
+            estado = 19
+          else:
+            break
+        
+        case 17:
+          if caractere_atual == "\n":
+            estado = 20
+            classificacao_token = classifica_token(estado)
+          
+
+          
+            
+        case 18:
+          if caractere_atual == "/":
+            estado = 20
+            classificacao_token = classifica_token(estado)
+          else:
+            estado = 15
+          
+        case 19:
+          if caractere_atual == "!":
+            estado = 20
+            classificacao_token = classifica_token(estado)
+          else:
+            estado = 16
         
         case 21:
           if caractere_atual.isdigit() or isletra(caractere_atual):
@@ -178,6 +253,6 @@ def compilador(fonte):
 
     index_linha += 1
 
-    classificacao_token = classifica_token(estado) #classfica o ultimo token
-    if classifica_token and token:
-      print_colorido(token, classificacao_token)
+  classificacao_token = classifica_token(estado) #classfica o ultimo token
+  if classifica_token and token:
+    print_colorido(token, classificacao_token)
