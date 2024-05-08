@@ -42,6 +42,9 @@ def classifica_token(estado):
     return "não reconhece"
 
 
+
+
+
 def compilador(fonte):
   index_linha         = 0
   estado              = 0
@@ -223,6 +226,6 @@ def compilador(fonte):
 
     index_linha += 1
 
-  classificacao_token = classifica_token(estado) #classfica o ultimo token
+  classificacao_token = classifica_token(estado)
   if classifica_token and token:
     print_colorido(token, classificacao_token)
