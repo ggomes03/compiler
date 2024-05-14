@@ -205,9 +205,8 @@ def compilador(fonte):
             estado = 6
           else:
             classificacao_token = classifica_token(estado)
-            if caractere_atual != "\n":
-              token = token[:-1]
-            index_caractere -= 1
+            # token = token[:-1]
+            # index_caractere -= 1
         case 22:
           if caractere_atual.isdigit() or isletra(caractere_atual):
             estado = 6
@@ -222,8 +221,8 @@ def compilador(fonte):
             estado = 23
           else:
             classificacao_token = classifica_token(estado)
-            token = token[:-1]
-            index_caractere -= 1
+            # token = token[:-1]
+            # index_caractere -= 1
             
       if classificacao_token and token:
         if classificacao_token != "Comentário":
