@@ -48,7 +48,14 @@ def classifica_token(estado):
 def compilador(fonte):
   index_linha         = 0
   estado              = 0
-  token               = ""
+  
+  # token               = {
+  #   "classe" : "",
+  #   "conteudo": ""
+  # }
+  
+  token = ""
+  
   while (index_linha < len(fonte)):
     index_caractere     = 0
     classificacao_token = ""
@@ -67,7 +74,6 @@ def compilador(fonte):
           elif is_se(caractere_atual):
             if caractere_atual in ['{', '}', ',', '*', '(', ')', '=', ';']:
               estado = 7
-              classificacao_token = classifica_token(estado)
             elif caractere_atual in ["+", ":", ">"]:
               estado = 8
             elif caractere_atual == ".":
@@ -87,10 +93,14 @@ def compilador(fonte):
         case 1:
           if caractere_atual.isdigit():
             estado = 1
-          elif caractere_atual == ",":
+          elif caractere_atual == ".":
             estado = 2
           else: 
             classificacao_token = classifica_token(estado)
+            if caractere_atual != "\n":
+              token = token[:-1]
+            index_caractere -= 1
+            
         case 2:
           if caractere_atual.isdigit():
             estado = 3
@@ -126,6 +136,11 @@ def compilador(fonte):
             classificacao_token = classifica_token(estado)
             token = token[:-1]
             index_caractere -= 1
+        case 7:
+          classificacao_token = classifica_token(estado)
+          if caractere_atual != "\n":
+            token = token[:-1]
+          index_caractere -= 1
         case 8:
           if caractere_atual == "=":
             estado = 9 
@@ -239,3 +254,6 @@ def compilador(fonte):
   classificacao_token = classifica_token(estado)
   if classifica_token and token:
     print_colorido(token, classificacao_token)
+    
+    
+  
